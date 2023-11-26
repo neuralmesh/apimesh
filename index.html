@@ -3,7 +3,6 @@
 <head>
     <title>GitHub File Navigator</title>
     <style>
-        /* Basic styling for layout */
         .container {
             display: flex;
         }
@@ -20,25 +19,29 @@
 </head>
 <body>
     <div class="container">
-        <div class="nav-drawer" id="navDrawer">
-            <!-- Files will be listed here -->
+        <div class="nav-drawer">
+            <ul hx-get="https://api.github.com/repos/neuralmesh/apimesh/contents/blog" hx-trigger="load">
+                <!-- Files will be listed here -->
+            </ul>
         </div>
         <div class="main-content">
             <!-- Empty main content area -->
         </div>
     </div>
 
+    <script src="https://unpkg.com/htmx.org"></script>
     <script>
-        fetch('https://api.github.com/repos/neuralmesh/apimesh/contents/blog')
-            .then(response => response.json())
-            .then(files => {
-                const navDrawer = document.getElementById('navDrawer');
+        document.body.addEventListener('htmx:afterRequest', function (event) {
+            if (event.detail.path === 'https://api.github.com/repos/neuralmesh/apimesh/contents/blog') {
+                const files = JSON.parse(event.detail.xhr.responseText);
+                const navDrawer = document.querySelector('.nav-drawer ul');
                 files.forEach(file => {
                     const listItem = document.createElement('li');
                     listItem.textContent = file.name;
                     navDrawer.appendChild(listItem);
                 });
-            });
+            }
+        });
     </script>
 </body>
 </html>
