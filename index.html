@@ -1,19 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>GitHub Markdown Renderer</title>
+    <title>GitHub File Navigator</title>
+    <style>
+        /* Basic styling for layout */
+        .container {
+            display: flex;
+        }
+        .nav-drawer {
+            width: 200px;
+            border-right: 1px solid #ddd;
+            padding: 10px;
+        }
+        .main-content {
+            flex-grow: 1;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div id="content"></div>
+    <div class="container">
+        <div class="nav-drawer" id="navDrawer">
+            <!-- Files will be listed here -->
+        </div>
+        <div class="main-content">
+            <!-- Empty main content area -->
+        </div>
+    </div>
+
     <script>
-        // Fetch Markdown content from GitHub
-        fetch('https://raw.githubusercontent.com/\${GITHUB_OWNER}/\${GITHUB_REPO}/\${GITHUB_BRANCH}/\${MARKDOWN_PATH}')
-            .then(response => response.text())
-            .then(markdown => {
-                // Render Markdown here
-                // Use a lightweight Markdown renderer or convert this part to HTML
-                document.getElementById('content').innerHTML = markdown; // Simple text assignment for now
+        fetch('https://api.github.com/repos/neuralmesh/apimesh/contents/blog')
+            .then(response => response.json())
+            .then(files => {
+                const navDrawer = document.getElementById('navDrawer');
+                files.forEach(file => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = file.name;
+                    navDrawer.appendChild(listItem);
+                });
             });
     </script>
 </body>
 </html>
+
