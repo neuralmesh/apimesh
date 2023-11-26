@@ -1,0 +1,44 @@
+name: issueblogger
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  process-for-blog:
+    if: github.event.label.name == 'blog'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install Python Dependencies
+        run: pip install fastapi pydantic langchain openai
+
+      - name: Fetch Issue Data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash ./issuefetcher ${{ github.event.issue.number }}
+
+      - name: Convert Issue to Markdown for Blog
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python ./convert_to_blog.py "${{ github.event.issue.number }}"
+
+      - name: Commit and Push Blog Post
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add blog/issue_${{ github.event.issue.number }}.md
+          git commit -m "Add blog post for issue #${{ github.event.issue.number }}"
+          git push
+
