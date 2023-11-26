@@ -25,7 +25,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add issue_${{ github.event.issue.number }}.md
+          git add .
           git commit -m "Add blog post for issue #${{ github.event.issue.number }}"
           git push
 
