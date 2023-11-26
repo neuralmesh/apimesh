@@ -1,0 +1,48 @@
+name: Apimesh Processing
+
+on:
+  issues:
+    types:
+      - labeled
+  pull_request:
+    types:
+      - labeled
+
+jobs:
+  process-with-ai:
+    runs-on: ubuntu-latest
+    if: github.event.label.name == 'apimesh'
+    permissions:
+      issues: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install Python Dependencies
+        run: |
+          pip install fastapi pydantic langchain openai
+
+      - name: Fetch Issue Data
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue view ${{ github.event.issue.number }} --json title,body,comments -t '{{.title}}|{{.body}}{{range .comments}}|{{.body}}{{end}}' > issue_data.txt
+
+      - name: Run Apimesh Python Script
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python ./apimesh.py "$(cat issue_data.txt)"
+
+      - name: Post AI Response as Comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} --body "$(cat ai_response.txt)"
+          gh issue edit ${{ github.event.issue.number }} --remove-label "apimesh"
+
+
