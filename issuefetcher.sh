@@ -10,6 +10,8 @@ fi
 # Assign the issue number to a variable
 ISSUE_NUMBER=$1
 
+mkdir -p blog
+
 # Fetch the issue data using GitHub CLI and save it in markdown format
-gh issue view "$ISSUE_NUMBER" --json title,body,comments -t '{{.title}}|{{.body}}{{range .comments}}|{{.body}}{{end}}' > "issue_${ISSUE_NUMBER}.md"
+gh issue view "$ISSUE_NUMBER" --json title,body,comments -t '{{.title}}|{{.body}}{{range .comments}}|{{.body}}{{end}}' > "blog/issue_${ISSUE_NUMBER}.md"
 
