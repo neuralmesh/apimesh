@@ -27,16 +27,15 @@ jobs:
         run: |
           pip install fastapi pydantic langchain openai
 
-      - name: Fetch Issue Data
+      - name: Fetch Issue Data with issuefetcher
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          gh issue view ${{ github.event.issue.number }} --json title,body,comments -t '{{.title}}|{{.body}}{{range .comments}}|{{.body}}{{end}}' > issue_data.txt
+        run: bash ./issuefetcher.sh ${{ github.event.issue.number }}
 
       - name: Run Apimesh Python Script
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: python ./apimesh.py "$(cat issue_data.txt)"
+        run: python ./apimesh.py "$(cat issue_${{ github.event.issue.number }}.md)"
 
       - name: Post AI Response as Comment
         env:
@@ -44,5 +43,4 @@ jobs:
         run: |
           gh issue comment ${{ github.event.issue.number }} --body "$(cat ai_response.txt)"
           gh issue edit ${{ github.event.issue.number }} --remove-label "apimesh"
-
 
