@@ -12,7 +12,7 @@ api_key = os.environ['OPENAI_API_KEY']
 
 # Initialize LangChain with OpenAI
 llm = OpenAI(api_key=api_key, temperature=0.7)  # Adjust temperature as needed
-prompt_template = "Given the following GitHub issue details: {issue_details}, what would be a good solution? Be concise, neutral and professional. aim for the asymptotically highest information density/text ratio"
+prompt_template = "Given the following GitHub issue details: {issue_details}, what would be a good solution? Be concise, neutral and professional. aim for the asymptotically highest information density/text ratio. if possible propose cli commands to run but clearly indicate what they do"
 
 # Setup LLMChain
 llm_chain = LLMChain(llm=llm, prompt=PromptTemplate.from_template(prompt_template))
