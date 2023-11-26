@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GitHub Markdown Renderer</title>
+</head>
+<body>
+    <div id="content"></div>
+    <script>
+        // Fetch Markdown content from GitHub
+        fetch('https://raw.githubusercontent.com/\${GITHUB_OWNER}/\${GITHUB_REPO}/\${GITHUB_BRANCH}/\${MARKDOWN_PATH}')
+            .then(response => response.text())
+            .then(markdown => {
+                // Render Markdown here
+                // Use a lightweight Markdown renderer or convert this part to HTML
+                document.getElementById('content').innerHTML = markdown; // Simple text assignment for now
+            });
+    </script>
+</body>
+</html>
