@@ -19,7 +19,7 @@ jobs:
       - name: Fetch and Save Issue Data as Markdown
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bash ./issuefetcher ${{ github.event.issue.number }}
+        run: bash ./issuefetcher.sh ${{ github.event.issue.number }}
 
       - name: Commit and Push Blog Post
         run: |
