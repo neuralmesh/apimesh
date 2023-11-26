@@ -1,0 +1,44 @@
+name: run curl on last comment url
+
+on:
+  issues:
+    types:
+      - labeled
+  pull_request:
+    types:
+      - labeled
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Check for 'gitraw' label
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          if [[ ${{ github.event.label.name }} == "gitraw" ]]; then
+            echo "Label 'gitraw' was added!"
+          else
+            echo "Label 'gitraw' was not added. Workflow will be skipped."
+            exit 0
+          fi
+          
+          echo "$GH_PAT" | gh auth login --with-token
+
+          COMMENTS_JSON=$(gh issue view "$ISSUE_NUMBER" --json comments)
+          LATEST_COMMENT=$(echo "$COMMENTS_JSON" | jq '.comments | last') 
+          
+          RESPONSE=$(curl -s "$LATEST_COMMENT")
+          echo "Response: $RESPONSE"
+
+          gh issue comment "$ISSUE_NUMBER" --body "$RESPONSE"
+          gh issue edit "$ISSUE_NUMBER" --remove-label "gitraw"
+
