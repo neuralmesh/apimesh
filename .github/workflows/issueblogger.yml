@@ -29,6 +29,8 @@ jobs:
           git commit -m "Add blog post for issue #${{ github.event.issue.number }}"
           git push
       - name: Remove blog label
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh issue edit ${{ github.event.issue.number }} --remove-label "blog"
 
