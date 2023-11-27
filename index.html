@@ -3,6 +3,7 @@
 <head>
     <title>GitHub File Navigator</title>
     <style>
+        /* Basic styling for layout */
         .container {
             display: flex;
         }
@@ -10,38 +11,51 @@
             width: 200px;
             border-right: 1px solid #ddd;
             padding: 10px;
+            overflow-y: auto;
         }
         .main-content {
             flex-grow: 1;
             padding: 10px;
         }
+        li {
+            cursor: pointer;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="nav-drawer">
-            <ul hx-get="https://api.github.com/repos/neuralmesh/apimesh/contents/blog" hx-trigger="load">
-                <!-- Files will be listed here -->
-            </ul>
+        <div class="nav-drawer" id="navDrawer">
+            <!-- Files will be listed here -->
         </div>
-        <div class="main-content">
-            <!-- Empty main content area -->
+        <div class="main-content" id="mainContent">
+            <!-- Markdown content will be rendered here -->
         </div>
     </div>
 
-    <script src="https://unpkg.com/htmx.org"></script>
+    <script src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
     <script>
-        document.body.addEventListener('htmx:afterRequest', function (event) {
-            if (event.detail.path === 'https://api.github.com/repos/neuralmesh/apimesh/contents/blog') {
-                const files = JSON.parse(event.detail.xhr.responseText);
-                const navDrawer = document.querySelector('.nav-drawer ul');
+        function fetchAndRenderMarkdown(url) {
+            fetch(url)
+                .then(response => response.text())
+                .then(text => {
+                    const converter = new showdown.Converter();
+                    const html = converter.makeHtml(text);
+                    document.getElementById('mainContent').innerHTML = html;
+                });
+        }
+
+        fetch('https://api.github.com/repos/neuralmesh/apimesh/contents/blog')
+            .then(response => response.json())
+            .then(files => {
+                const navDrawer = document.getElementById('navDrawer');
                 files.forEach(file => {
                     const listItem = document.createElement('li');
                     listItem.textContent = file.name;
+                    listItem.onclick = () => fetchAndRenderMarkdown(file.download_url);
                     navDrawer.appendChild(listItem);
                 });
-            }
-        });
+            });
     </script>
 </body>
 </html>
