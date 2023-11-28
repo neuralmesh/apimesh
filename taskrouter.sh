@@ -3,11 +3,13 @@
 # Debug: Echoing starting message
 echo "Starting script with LABEL_NAME: $LABEL_NAME"
 
+gh repo clone neuralmesh/apimesh
+
 # Associative array to map label names to script URLs
 declare -A scriptMap
-scriptMap["comment"]="https://raw.githubusercontent.com/neuralmesh/apimesh/main/issuecommenter.sh"
-scriptMap["blog"]="https://raw.githubusercontent.com/neuralmesh/apimesh/main/issueblogger.sh"
-scriptMap["taskrouter"]="https://raw.githubusercontent.com/neuralmesh/apimesh/main/taskrouter.sh"
+scriptMap["comment"]="./issuecommenter.sh"
+scriptMap["blog"]="./issueblogger.sh"
+scriptMap["taskrouter"]="./taskrouter.sh"
 
 # Function to execute a script from a URL
 executeScript() {
