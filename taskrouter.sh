@@ -6,24 +6,32 @@ GH_TOKEN=$2
 ISSUE_NUMBER=$3
 LABEL_NAME=$4
 
-# Function to handle "blog" label
-function handleBlog {
-  # Fetch the issueblogger script
-  curl -s https://raw.githubusercontent.com/neuralmesh/apimesh/main/issueblogger.sh > issueblogger.sh
-  chmod +x issueblogger.sh
-  ./issueblogger.sh $ISSUE_NUMBER
+function executeScript {
+    local script_url=$1
+    shift
+    local script_name=$(basename "$script_url")
+
+    # Fetch and execute the script with any additional arguments
+    curl -s "$script_url" > "$script_name" && chmod +x "$script_name" && ./"$script_name" "$@"
 }
 
-# Function to handle other tasks, e.g., "taskrouter"
+function handleBlog {
+    executeScript "https://raw.githubusercontent.com/neuralmesh/apimesh/main/issueblogger.sh" "$ISSUE_NUMBER"
+}
+
 function handleTaskRouter {
-  # Fetch the taskrouter script
-  curl -s https://raw.githubusercontent.com/neuralmesh/apimesh/main/taskrouter.sh > taskrouter.sh
-  chmod +x taskrouter.sh
-  ./taskrouter.sh
+    executeScript "https://raw.githubusercontent.com/neuralmesh/apimesh/main/taskrouter.sh"
+}
+
+function handleComment {
+    executeScript "https://raw.githubusercontent.com/neuralmesh/apimesh/main/issuecommenter.sh" "$OPENAI_API_KEY" "$GH_TOKEN" "$ISSUE_NUMBER"
 }
 
 # Main
 case "$LABEL_NAME" in
+  "comment")
+    handleComment
+    ;;
   "blog")
     handleBlog
     ;;
