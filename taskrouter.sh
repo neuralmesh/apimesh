@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Debug: Echoing starting message
-echo "Starting script with LABEL_NAME: $4"
+echo "Starting script with LABEL_NAME: $LABEL_NAME"
 
 # Associative array to map label names to script URLs
 declare -A scriptMap
@@ -17,11 +17,9 @@ executeScript() {
 }
 
 # Main logic
-if [[ -n "${scriptMap[$4]}" ]]; then
-    # Debug: Echoing which script will be executed
-    echo "Handling label: $4"
-    executeScript "${scriptMap[$4]}" "$@"
+if [[ -n "${scriptMap[$LABEL_NAME]}" ]]; then
+    echo "Handling label: $LABEL_NAME"
+    executeScript "${scriptMap[$LABEL_NAME]}" "$@"
 else
-    echo "No matching handler for label: $4"
+    echo "No matching handler for label: $LABEL_NAME"
 fi
-
