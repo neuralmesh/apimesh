@@ -4,6 +4,7 @@
 echo "Starting script with LABEL_NAME: $LABEL_NAME"
 
 gh repo clone neuralmesh/apimesh
+ls -la
 
 # Associative array to map label names to script URLs
 declare -A scriptMap
