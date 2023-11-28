@@ -48,5 +48,5 @@ EOF
 gh issue comment "$ISSUE_NUMBER" --body "$MARKDOWN_CONTENT"
 
 # Removing label from the issue
-gh issue edit "$ISSUE_NUMBER" --remove-label "taskrouter"
+gh issue edit "$ISSUE_NUMBER" --remove-label "$LABEL_NAME"
 
