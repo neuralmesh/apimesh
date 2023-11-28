@@ -13,11 +13,11 @@ scriptMap["comment"]="./issuecommenter.sh"
 scriptMap["blog"]="./issueblogger.sh"
 scriptMap["taskrouter"]="./taskrouter.sh"
 
-# Function to execute a script from a URL
+# Function to execute a local script
 executeScript() {
-    local script_url=$1
-    echo "Executing script from: $script_url"
-    bash <(curl -s "$script_url") "${@:2}"
+    local script_path=$1
+    echo "Executing script from: $script_path"
+    bash "$script_path" "${@:2}"
 }
 
 # Main logic
