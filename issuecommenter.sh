@@ -12,22 +12,41 @@ for var in "${required_env_vars[@]}"; do
     fi
 done
 
-# Install Python dependencies
-echo "Installing Python Dependencies..."
-pip install fastapi pydantic langchain openai
+RESPONSE=$(curl -s "https://api.openai.com/v1/chat/completions" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $OPENAI_API_KEY" \
+  -d @- <<EOF
+{
+  "model": "gpt-4",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a helpful assistant. Provide a way to solve the user issue but make sure that you stay concise and use a markdown format for your response. you may chose three different approaches you could actually do via the command line right now. even if it is just brainstorming. each proposed solution must contain exactly one bash command that can be run. now this may include writing entire files or just pinging an ip address. focus on how it will help the project succeed in helping to develop new tools or solutions that specialize in improving developer experience. Your main goal is to have the highest possible information/token ratio possible. And make sure you respond in nice and professional concise neutral tone. Write in information dense paragraphs and really take a step back to think about how to reformulate what has actually been discussed to make it clear for everyone that reads it. Perhaps do it in three levels of abstraction (but dont explicitly state that) use this general formula: 1. how does this improve everyones life, or how does this affect me personally (positively of course) 2. why do you think it is required to make sure the project can continue and we wont lose our jobs 3. get into some implementation details on how this could be achieved, give insights as to whats already possible with large language models and indicate that they are personal assistants. Okay i think you get my point. now really reflect on that and turn it into a markdown formatted structure to be rendered beautifully while maintaining concise and neutral language."
+    },
+    {
+      "role": "user",
+      "content": "$ISSUE_CONTENT"
+    }
+  ]
+}
+EOF
+)
 
-# Fetch issue data and run Apimesh Python script
-echo "Fetching Issue Data for Issue Number: $ISSUE_NUMBER"
-bash ./issuefetcher.sh "$ISSUE_NUMBER"
+CONTENT=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')
+METADATA=$(echo "$RESPONSE" | jq '{id: .id, model: .model, created: .created}')
 
-echo "Running Apimesh Python Script..."
-python ./apimesh.py "$(cat issue_$ISSUE_NUMBER.md)"
+# Write the metadata and content to a variable
+MARKDOWN_CONTENT=$(cat <<EOF
+---
+$(echo "$METADATA" | yq e -P -)
+---
+$CONTENT
+EOF
+)
 
-# Authenticate with GitHub CLI and post AI response as a comment
-echo "Authenticating GitHub CLI..."
-echo "$GH_TOKEN" | gh auth login --with-token
+# Posting the content as a comment using GitHub CLI
+gh issue comment "$ISSUE_NUMBER" --body "$MARKDOWN_CONTENT"
 
-echo "Posting AI Response as Comment..."
-gh issue comment "$ISSUE_NUMBER" --body "$(cat ai_response.txt)"
-gh issue edit "$ISSUE_NUMBER" --remove-label "apimesh"
+# Removing label from the issue
+gh issue edit "$ISSUE_NUMBER" --remove-label "taskrouter"
 
