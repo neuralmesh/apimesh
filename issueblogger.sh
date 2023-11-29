@@ -48,6 +48,8 @@ METADATA=$(echo "$RESPONSE" | jq '{id: .id, model: .model, created: .created}')
 
 BRANCH_NAME="blog-issue-${ISSUE_NUMBER}"
 
+gh auth setup-git
+
 # Create a new branch and switch to it
 git checkout -b "$BRANCH_NAME"
 
