@@ -49,5 +49,7 @@ METADATA=$(echo "$RESPONSE" | jq '{id: .id, model: .model, created: .created}')
 # Set and export BRANCH_NAME as an environment variable
 export BRANCH_NAME="blog-issue-${ISSUE_NUMBER}"
 
+gh issue edit "$ISSUE_NUMBER" --remove-label "$LABEL_NAME"
+
 bash ./pullrequester.sh
 
