@@ -4,7 +4,7 @@
 set -e
 
 # Check required environment variables
-required_env_vars=("OPENAI_API_KEY" "ISSUE_NUMBER")
+required_env_vars=("OPENAI_API_KEY" "ISSUE_NUMBER" "MODEL_LLM")
 for var in "${required_env_vars[@]}"; do
     if [ -z "${!var}" ]; then 
         echo "Error: $var environment variable is not set."
@@ -20,7 +20,7 @@ RESPONSE=$(curl -s "https://api.openai.com/v1/chat/completions" \
   -H "Authorization: Bearer $OPENAI_API_KEY" \
   -d @- <<EOF
 {
-  "model": "gpt-4",
+  "model": "$MODEL_LLM",
   "messages": [
     {
       "role": "system",
