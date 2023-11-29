@@ -4,13 +4,7 @@
 set -e
 
 # Check required environment variables
-required_env_vars=("GITHUB_TOKEN" "OPENAI_API_KEY" "ISSUE_NUMBER" "MODEL_LLM")
-for var in "${required_env_vars[@]}"; do
-    if [ -z "${!var}" ]; then 
-        echo "Error: $var environment variable is not set."
-        exit 1
-    fi
-done
+bash envtester.sh GITHUB_TOKEN OPENAI_API_KEY ISSUE_NUMBER MODEL_LLM
 
 ISSUE_CONTENT=$(bash ./issuefetcher.sh)
 

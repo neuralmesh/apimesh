@@ -4,13 +4,7 @@
 set -e
 
 # Check required environment variables
-required_env_vars=("BRANCH_NAME" "GITHUB_TOKEN" "GITHUB_REPOSITORY")
-for var in "${required_env_vars[@]}"; do
-    if [ -z "${!var}" ]; then 
-        echo "Error: $var environment variable is not set."
-        exit 1
-    fi
-done
+bash envtester.sh BRANCH_NAME GITHUB_TOKEN GITHUB_REPOSITORY
 
 # Configure Git user identity
 git config --global user.email "action@github.com"

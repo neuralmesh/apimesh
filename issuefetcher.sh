@@ -1,11 +1,7 @@
 #!/bin/bash
 
 # Check if the issue number is provided
-if [ -z "$ISSUE_NUMBER" ]
-then
-  echo "Error: No ISSUE_NUMBER env var found."
-  exit 1
-fi
+bash envtester.sh ISSUE_NUMBER
 
 # Define a Go template for Markdown formatting
 TEMPLATE='
