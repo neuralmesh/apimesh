@@ -4,7 +4,7 @@
 set -e
 
 # Check required environment variables
-required_env_vars=("BRANCH_NAME" "GITHUB_TOKEN")
+required_env_vars=("BRANCH_NAME" "GITHUB_TOKEN" "GITHUB_REPOSITORY")
 for var in "${required_env_vars[@]}"; do
     if [ -z "${!var}" ]; then 
         echo "Error: $var environment variable is not set."
@@ -25,6 +25,12 @@ PR_BODY="This is an automated pull request for branch ${BRANCH_NAME}."
 
 git add .
 git commit -m "Automated commit for ${BRANCH_NAME}"
+
+# Set up remote URL with authentication token
+GIT_REMOTE_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+git remote set-url origin "${GIT_REMOTE_URL}"
+
+# Push the changes
 git push --set-upstream origin "$BRANCH_NAME"
 
 # Create the pull request using the GITHUB_TOKEN provided by GitHub Actions
