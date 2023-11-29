@@ -4,7 +4,7 @@
 set -e
 
 # Check required environment variables
-required_env_vars=("GH_TOKEN" "OPENAI_API_KEY" "ISSUE_NUMBER")
+required_env_vars=("OPENAI_API_KEY" "ISSUE_NUMBER")
 for var in "${required_env_vars[@]}"; do
     if [ -z "${!var}" ]; then 
         echo "Error: $var environment variable is not set."
@@ -46,25 +46,8 @@ METADATA=$(echo "$RESPONSE" | jq '{id: .id, model: .model, created: .created}')
   echo "$CONTENT"
 } > "blog/issue_${ISSUE_NUMBER}.md"
 
-BRANCH_NAME="blog-issue-${ISSUE_NUMBER}"
+# Set and export BRANCH_NAME as an environment variable
+export BRANCH_NAME="blog-issue-${ISSUE_NUMBER}"
 
-git config --global user.email "action@apimesh.io"
-git config --global user.name "issueblogger"
-
-# Create a new branch and switch to it
-git checkout -b "$BRANCH_NAME"
-
-# Add the new markdown file
-git add "blog/issue_${ISSUE_NUMBER}.md"
-
-# Commit the changes
-git commit -m "Add blog post for issue $ISSUE_NUMBER"
-
-git push --set-upstream origin "$BRANCH_NAME"
-
-# Create a pull request
-gh pr create --title "Blog Post for Issue $ISSUE_NUMBER" \
-             --body "Adding a blog post for issue $ISSUE_NUMBER." \
-             --base main \
-             --head "$BRANCH_NAME"
+bash ./pullrequester.sh
 
