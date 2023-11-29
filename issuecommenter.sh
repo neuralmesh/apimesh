@@ -12,6 +12,8 @@ for var in "${required_env_vars[@]}"; do
     fi
 done
 
+ISSUE_CONTENT=$(bash ./issuefetcher.sh)
+
 RESPONSE=$(curl -s "https://api.openai.com/v1/chat/completions" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $OPENAI_API_KEY" \
