@@ -12,6 +12,7 @@ declare -A scriptMap
 scriptMap["comment"]="./issuecommenter.sh"
 scriptMap["blog"]="./issueblogger.sh"
 scriptMap["taskrouter"]="./taskrouter.sh"
+scriptMap["pullrequest"]="./pullrequester.sh"
 
 # Function to execute a local script
 executeScript() {

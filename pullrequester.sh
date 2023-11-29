@@ -12,13 +12,16 @@ for var in "${required_env_vars[@]}"; do
     fi
 done
 
+# Configure Git user identity
+git config --global user.email "action@github.com"
+git config --global user.name "GitHub Action"
 
 # Title and body for the pull request
 PR_TITLE="Pull Request for ${BRANCH_NAME}"
 PR_BODY="This is an automated pull request for branch ${BRANCH_NAME}."
 
 git add .
-git commit -m "blogging something"
+git commit -m "Automated commit for ${BRANCH_NAME}"
 git push --set-upstream origin "$BRANCH_NAME"
 
 # Create the pull request using the GITHUB_TOKEN provided by GitHub Actions
