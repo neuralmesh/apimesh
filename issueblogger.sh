@@ -48,7 +48,7 @@ METADATA=$(echo "$RESPONSE" | jq '{id: .id, model: .model, created: .created}')
 
 BRANCH_NAME="blog-issue-${ISSUE_NUMBER}"
 
-gh auth login --with-token < "$GH_TOKEN"
+echo $GH_TOKEN | gh auth login --with-token
 gh auth setup-git
 
 # Create a new branch and switch to it
