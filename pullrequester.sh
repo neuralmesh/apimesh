@@ -16,6 +16,9 @@ done
 git config --global user.email "action@github.com"
 git config --global user.name "GitHub Action"
 
+# Create and checkout the new branch
+git checkout -b "$BRANCH_NAME"
+
 # Title and body for the pull request
 PR_TITLE="Pull Request for ${BRANCH_NAME}"
 PR_BODY="This is an automated pull request for branch ${BRANCH_NAME}."
