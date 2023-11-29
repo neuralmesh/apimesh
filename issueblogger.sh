@@ -48,8 +48,8 @@ METADATA=$(echo "$RESPONSE" | jq '{id: .id, model: .model, created: .created}')
 
 BRANCH_NAME="blog-issue-${ISSUE_NUMBER}"
 
-echo $GH_TOKEN | gh auth login --with-token
-gh auth setup-git
+git config --global user.email "action@apimesh.io"
+git config --global user.name "issueblogger"
 
 # Create a new branch and switch to it
 git checkout -b "$BRANCH_NAME"
