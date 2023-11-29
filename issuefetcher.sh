@@ -1,17 +1,25 @@
 #!/bin/bash
 
 # Check if the issue number is provided
-if [ -z "$1" ]
+if [ -z "$ISSUE_NUMBER" ]
 then
-  echo "Error: No issue number provided."
+  echo "Error: No ISSUE_NUMBER env var found."
   exit 1
 fi
 
-# Assign the issue number to a variable
-ISSUE_NUMBER=$1
+# Define a Go template for Markdown formatting
+TEMPLATE='
+{{- printf "# %s\n\n" .title -}}
+{{- .body -}}
 
-mkdir -p blog
+{{- if .comments -}}
+  {{- range $index, $comment := .comments -}}
+    {{- printf "\n#### Comment %d\n\n" $index -}}
+    {{- $comment.body -}}
+  {{- end -}}
+{{- end -}}
+'
 
-# Fetch the issue data using GitHub CLI and save it in markdown format
-gh issue view "$ISSUE_NUMBER" --json title,body,comments -t '{{.title}}|{{.body}}{{range .comments}}|{{.body}}{{end}}' > "blog/issue_${ISSUE_NUMBER}.md"
+# Fetch the issue data using GitHub CLI with the custom template
+gh issue view "$ISSUE_NUMBER" --json title,body,comments --template "$TEMPLATE"
 
