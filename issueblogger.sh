@@ -36,6 +36,7 @@ METADATA=$(echo "$RESPONSE" | jq '{id: .id, model: .model, created: .created}')
 {
   echo "---"
   echo "$METADATA" | yq e -P -  # Convert JSON metadata to YAML
+  echo "Issue $ISSUE_NUMBER"
   echo "---"
   echo "$CONTENT"
 } > "blog/issue_${ISSUE_NUMBER}.md"
