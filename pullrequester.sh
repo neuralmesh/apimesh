@@ -31,7 +31,7 @@ GIT_REMOTE_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOS
 git remote set-url origin "${GIT_REMOTE_URL}"
 
 # Push the changes
-git push --set-upstream origin "$BRANCH_NAME"
+git push --force --set-upstream origin "$BRANCH_NAME"
 
 # Create the pull request using the GITHUB_TOKEN provided by GitHub Actions
 gh pr create --title "$PR_TITLE" --body "$PR_BODY" --head "$BRANCH_NAME"
