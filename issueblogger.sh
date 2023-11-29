@@ -46,8 +46,10 @@ METADATA=$(echo "$RESPONSE" | jq '{id: .id, model: .model, created: .created}')
   echo "$CONTENT"
 } > "blog/issue_${ISSUE_NUMBER}.md"
 
+BRANCH_NAME="blog-issue-${ISSUE_NUMBER}"
+
 # Create a new branch and switch to it
-gh repo create-branch "issue-${ISSUE_NUMBER}-branch"
+git checkout -b "$BRANCH_NAME"
 
 # Add the new markdown file
 git add "blog/issue_${ISSUE_NUMBER}.md"
@@ -55,12 +57,11 @@ git add "blog/issue_${ISSUE_NUMBER}.md"
 # Commit the changes
 git commit -m "Add blog post for issue $ISSUE_NUMBER"
 
-# Push the branch to the remote repository
-gh repo view --web --branch "issue-${ISSUE_NUMBER}-branch"
+git push --set-upstream origin "$BRANCH_NAME"
 
 # Create a pull request
 gh pr create --title "Blog Post for Issue $ISSUE_NUMBER" \
              --body "Adding a blog post for issue $ISSUE_NUMBER." \
              --base main \
-             --head "issue-${ISSUE_NUMBER}-branch"
+             --head "$BRANCH_NAME"
 
