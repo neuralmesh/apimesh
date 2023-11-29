@@ -19,6 +19,7 @@ PR_BODY="This is an automated pull request for branch ${BRANCH_NAME}."
 
 git add .
 git commit -m "blogging something"
+git push --set-upstream origin "$BRANCH_NAME"
 
 # Create the pull request using the GITHUB_TOKEN provided by GitHub Actions
 gh pr create --title "$PR_TITLE" --body "$PR_BODY" --head "$BRANCH_NAME"
