@@ -10,3 +10,4 @@ Develop an Automated Problem-Solving Tool Using Language Models
 4. Reduce dependency on external communication for problem-solving by 95%.
 5. Incorporate user feedback for continuous improvement of the tool's effectiveness.
 6. Showcase three practical applications created using this tool.
+
