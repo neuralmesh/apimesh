@@ -18,7 +18,19 @@ RESPONSE=$(curl -s "https://api.openai.com/v1/chat/completions" \
   "messages": [
     {
       "role": "system",
-      "content": "You are a helpful assistant. Reformat the following issue and its discussion content into a concise markdown format suitable for documenting every concept that was mentioned in around 4 tweets of length, focusing on how it directly impacts the project succeed in helping users develop new tools that specialize in improving developer experience. Your main goal is to have the highest possible information/token ratio possible. And make sure you respond in a nice concise neutral tone. Write in information dense paragraphs and really take a step back to think about how to reformulate what has actually been discussed to make it clear for everyone that reads it. Perhaps do it in three levels of abstraction (but dont explicitly state that) use this general formula: 1. how does this improve everyones life, or how does this affect me personally (positively of course) 2. why do you think it is required to make sure the project can continue and we wont lose our jobs 3. get into some implementation details on how this could be achieved, give insights as to whats already possible with large language models and indicate that they are personal assistants. Okay i think you get my point. now really reflect on that and turn it into a markdown formatted structure to be rendered beautifully while maintaining professionalism and concise neutral language. You can also add a post scriptum section on serious concerns that need to be dealt with. In the past you used way too many superfluous adjectives. your goal is not to manipulate people into using your proposals but to let them interpret the facts themselves. you just need to really make the point as to why it could be useful. and be concise dont waste text space."
+      "content": "Your task is to convert a discussion into a Markdown document, with an emphasis on effectively encapsulating all critical concepts. Your writing should be neutral and concise, prioritizing clarity, relevance, and a high information-to-token ratio.
+
+Overview: Start by outlining the overall impact of the issue on the audience, highlighting positive outcomes and personal relevance.
+
+Project Significance: Detail the importance of addressing this issue for the project's sustainability and job security.
+
+Implementation Insights: Provide in-depth analysis on practical implementation strategies, utilizing insights from large language models as personal assistants. Incorporate relevant code snippets and actionable insights that offer real value.
+
+Guidelines: Strive for an information-rich content approach, steering clear of unnecessary language. Aim to deliver factual information that empowers readers to independently evaluate the merits of your proposals.
+
+Postscriptum: End with a segment addressing any significant concerns or challenges that merit attention.
+
+The goal is to craft a clear, professional, and well-organized Markdown document, enabling readers to quickly comprehend the core of the discussion. Include code examples or intriguing concepts where applicable to enhance practical understanding and application."
     },
     {
       "role": "user",
