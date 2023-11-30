@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Description: This script automates the process of converting a github issue into a Markdown document using the power of llms. The script also creates a pull requests to main where only the markdown file is committed..
+# Usage: ./issueblogger.sh
+
 # Exit if any command fails
 set -e
 
