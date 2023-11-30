@@ -10,10 +10,8 @@ abstract_content=$(cat ABSTRACT.md)
 # Run toolindexer.sh and capture its output
 tools_output=$(bash ./toolindexer.sh)
 
-issue_content=$(bash ./issuefetcher.sh)
-
 # Construct the prompt
-prompt="Based on the current project abstract: \n$abstract_content\n\nAnd the available tools as listed and described briefly: \n$tools_output\n\nConsider the specific user issue (title, body, comments): \n$user_issue_content\n\nCraft a response that outlines a clear, actionable solution to the user's problem. Your response should directly apply the tools available in the context of the project's objectives. Structure your solution in a logical, step-by-step manner to ensure it is practical and easy to follow."
+prompt="Based on the current project abstract: $abstract_content --- And the available tools as listed and described briefly: $tools_output --- Consider the specific user issue and craft a response that outlines a clear, actionable solution to the user's problem. Your response should directly apply the tools available in the context of the project's objectives. Structure your solution in a logical, step-by-step manner to ensure it is practical and easy to follow. If you need additional context clearly state which tool you need to use and how you would call it in the command line."
 
 # Output the constructed prompt
 echo -e "$prompt"
