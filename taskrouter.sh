@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# uses an env var called LABEL_NAME to decide which script to run
+# implemented tools are: comment, blog, taskrouter, pullrequest
+# usage: ./taskrouter
+
 # Debug: Echoing starting message
 echo "Starting script with LABEL_NAME: $LABEL_NAME"
 
