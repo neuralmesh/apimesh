@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# uses gh cli to create a pull request.
+# it adds and commits all changes, changes branch pushes and creates a pullrequest
+# usage: ./pullrequester.sh BRANCH_NAME GITHUB_REPOSITORY
+
 # Exit if any command fails
 set -e
 
