@@ -14,6 +14,7 @@ issue_content=$(bash ./issuefetcher.sh)
 
 # Construct the prompt
 prompt="Based on the current project abstract: \n$abstract_content\n\nAnd the available tools as listed and described briefly: \n$tools_output\n\nConsider the specific user issue (title, body, comments): \n$user_issue_content\n\nCraft a response that outlines a clear, actionable solution to the user's problem. Your response should directly apply the tools available in the context of the project's objectives. Structure your solution in a logical, step-by-step manner to ensure it is practical and easy to follow."
+
 # Output the constructed prompt
 echo -e "$prompt"
 
