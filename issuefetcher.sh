@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# fetches issue content from github
+# turns it into a nicely formatted markdown string and prints it to stdout to be piped somewhere
+# Usage: ./issuefetcher.sh
+
 # Check if the issue number is provided
 bash envtester.sh ISSUE_NUMBER
 
