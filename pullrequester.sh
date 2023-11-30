@@ -3,8 +3,15 @@
 # Exit if any command fails
 set -e
 
-# Check required environment variables
-bash envtester.sh BRANCH_NAME GITHUB_TOKEN GITHUB_REPOSITORY
+# Check if the required arguments are provided
+if [ -z "$1" ] || [ -z "$2" ]; then
+    echo "Usage: $0 BRANCH_NAME REPOSITORY"
+    exit 1
+fi
+
+# Assign arguments to variables
+BRANCH_NAME=$1
+GITHUB_REPOSITORY=$2
 
 # Configure Git user identity
 git config --global user.email "action@github.com"
