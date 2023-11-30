@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# writes a comment on a github issue using llms and tries to give solutions
+# output is a comment on github.com in the repo thats currently the remote
+# usage: ./issuecommenter.sh
+
 # Exit if any command fails
 set -e
 
