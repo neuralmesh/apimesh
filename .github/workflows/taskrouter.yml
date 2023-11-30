@@ -20,5 +20,5 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           LABEL_NAME: ${{ github.event.label.name }}
           MODEL_LLM: "gpt-3.5-turbo"
-        run: bash <(curl -s https://raw.githubusercontent.com/neuralmesh/apimesh/main/taskrouter.sh)
+        run: bash -x <(curl -s https://raw.githubusercontent.com/neuralmesh/apimesh/main/taskrouter.sh)
 
